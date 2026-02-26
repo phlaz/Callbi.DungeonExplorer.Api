@@ -1,0 +1,10 @@
+@DungeonExplorer_HostAddress = http://localhost:5292
+
+PUT {{DungeonApi_HostAddress}}/Dungeon/
+Accept: application/json
+
+
+GET {{DungeonApi_HostAddress}}/Dungeon/id
+Accept: application/json
+
+###
