@@ -1,6 +1,6 @@
-﻿using Dungeon.Domain;
+﻿using DungeonExplorer.Api.Domain;
 
-namespace Dungeon.Service;
+namespace DungeonExplorer.Api.Service;
 
 public interface IPathfindingService
 {
@@ -12,7 +12,7 @@ public class PathfindingService : IPathfindingService
     public PathResult ComputePath(IDungeon map)
     {
         var visited = new HashSet<(int, int)>();
-        var queue = new Queue<List<IPosition>>();
+        var queue = new Queue<List<Position>>();
         queue.Enqueue([map.StartPosition]);
 
         while(queue.Count > 0)
@@ -28,7 +28,7 @@ public class PathfindingService : IPathfindingService
                 if(!visited.Contains((neighbor.X, neighbor.Y)))
                 {
                     visited.Add((neighbor.X, neighbor.Y));
-                    var newPath = new List<IPosition>(path) { neighbor };
+                    var newPath = new List<Position>(path) { neighbor };
                     queue.Enqueue(newPath);
                 }
             }
@@ -37,7 +37,7 @@ public class PathfindingService : IPathfindingService
         return new PathResult { Error = "No valid path found" };
     }
 
-    private static IEnumerable<IPosition> GetNeighbors(IPosition pos, IDungeon map)
+    private static IEnumerable<Position> GetNeighbors(Position pos, IDungeon map)
     {
         var directions = new[] { (0, 1), (1, 0), (0, -1), (-1, 0) };
         foreach(var (dx, dy) in directions)

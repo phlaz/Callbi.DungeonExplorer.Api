@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Dungeon.Service;
-using Dungeon.Domain;
+using DungeonExplorer.Api.Service;
+using DungeonExplorer.Api.Domain;
 
-namespace DungeonExplorer;
+namespace DungeonExplorer.Api.Controllers;
 
 [ApiController]
 [Route("api/dungeons")]

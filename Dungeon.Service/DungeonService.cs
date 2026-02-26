@@ -1,6 +1,6 @@
-﻿using Dungeon.Domain;
+﻿using DungeonExplorer.Api.Domain;
 
-namespace Dungeon.Service;
+namespace DungeonExplorer.Api.Service;
 
 public class DungeonService(IDungeonRepository repository, IPathfindingService pathfinding)
     : IDungeonService

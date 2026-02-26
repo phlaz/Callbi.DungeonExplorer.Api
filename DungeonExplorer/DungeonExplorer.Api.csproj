@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dungeon.Service\Dungeon.Service.csproj" />
+    <ProjectReference Include="..\Dungeon.Service\DungeonExplorer.Api.Service.csproj" />
   </ItemGroup>
 
 </Project>

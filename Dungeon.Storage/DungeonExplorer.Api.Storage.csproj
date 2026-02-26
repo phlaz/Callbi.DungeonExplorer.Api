@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dungeon.Domain\Dungeon.Domain.csproj" />
+    <ProjectReference Include="..\Dungeon.Domain\DungeonExplorer.Api.Domain.csproj" />
   </ItemGroup>
 
 </Project>

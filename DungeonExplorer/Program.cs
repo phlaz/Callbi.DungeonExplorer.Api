@@ -1,9 +1,7 @@
-using Dungeon.Domain;
-using Dungeon.Service;
-using Dungeon.Storage;
-using Microsoft.OpenApi;
+using DungeonExplorer.Api.Domain;
+using DungeonExplorer.Api.Service;
+using DungeonExplorer.Api.Storage;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 

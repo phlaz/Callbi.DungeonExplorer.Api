@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36811.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonApi", "DungeonApi\DungeonApi.csproj", "{228971C9-6F0F-355F-6E91-9833407CAB98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api", "DungeonExplorer\DungeonExplorer.Api.csproj", "{7DE88C02-511B-4A5E-99FD-22838EC66274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer", "DungeonExplorer\DungeonExplorer.csproj", "{7DE88C02-511B-4A5E-99FD-22838EC66274}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Domain", "Dungeon.Domain\DungeonExplorer.Api.Domain.csproj", "{C98E3DB9-1481-4A49-B4D2-E1277238FD65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dungeon.Domain", "Dungeon.Domain\Dungeon.Domain.csproj", "{C98E3DB9-1481-4A49-B4D2-E1277238FD65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Service", "Dungeon.Service\DungeonExplorer.Api.Service.csproj", "{1B33A9CB-1467-46D4-875D-F5116DC95960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dungeon.Service", "Dungeon.Service\Dungeon.Service.csproj", "{1B33A9CB-1467-46D4-875D-F5116DC95960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Storage", "Dungeon.Storage\DungeonExplorer.Api.Storage.csproj", "{6123B3EB-1393-6D4F-8822-34A2AA2D4BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dungeon.Storage", "Dungeon.Storage\Dungeon.Storage.csproj", "{6123B3EB-1393-6D4F-8822-34A2AA2D4BF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Tests", "DungeonExplorer.Api.Tests\DungeonExplorer.Api.Tests.csproj", "{B37E394A-1DFB-4E7A-B863-5279A9E428EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{228971C9-6F0F-355F-6E91-9833407CAB98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{228971C9-6F0F-355F-6E91-9833407CAB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{228971C9-6F0F-355F-6E91-9833407CAB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{228971C9-6F0F-355F-6E91-9833407CAB98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{6123B3EB-1393-6D4F-8822-34A2AA2D4BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6123B3EB-1393-6D4F-8822-34A2AA2D4BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6123B3EB-1393-6D4F-8822-34A2AA2D4BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
-﻿namespace Dungeon.Storage;
+﻿namespace DungeonExplorer.Api.Storage;
 
-using Dungeon.Domain;
+using DungeonExplorer.Api.Domain;
 
 using Microsoft.EntityFrameworkCore;
 

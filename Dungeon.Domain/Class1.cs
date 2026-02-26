@@ -1,4 +1,4 @@
-﻿namespace Dungeon.Domain;
+﻿namespace DungeonExplorer.Api.Domain;
 
 public interface IDungeonService
 {
@@ -9,13 +9,6 @@ public interface IDungeonService
     Task<PathResult> GetRouteThroughDungeonAsync(int id);
 }
 
-public interface IPosition
-{
-    int X { get; }
-    
-    int Y { get; }
-}
-
 public interface IDungeon
 {
     int Id { get; }
@@ -24,11 +17,11 @@ public interface IDungeon
 
     int Height { get; }
 
-    IPosition StartPosition { get; }
+    Position StartPosition { get; }
 
-    IPosition Goal { get; }
+    Position Goal { get; }
 
-    IPosition[] Walls { get; }
+    Position[] Walls { get; }
 }
 
 public interface IDungeonBuilder
@@ -54,8 +47,4 @@ public interface IWriteDungeonRepository<in TDungeon>
     Task<IDungeon?> AddNewDungeonAsync(TDungeon model);
 }
 
-public class Class1
-{
-
-}
 

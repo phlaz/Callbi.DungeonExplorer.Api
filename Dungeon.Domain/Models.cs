@@ -1,6 +1,6 @@
-﻿namespace Dungeon.Domain;
+﻿namespace DungeonExplorer.Api.Domain;
 
-public class Position : IPosition
+public class Position 
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -24,13 +24,13 @@ public class DungeonMap : IDungeon
     public int Id { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    public IPosition StartPosition { get; set; } = new Position();
-    public IPosition Goal { get; set; } = new Position();
-    public IPosition[] Walls { get; set; } = [];
+    public Position StartPosition { get; set; } = new Position();
+    public Position Goal { get; set; } = new Position();
+    public Position[] Walls { get; set; } = [];
 }
 
 public class PathResult
 {
-    public List<IPosition> Path { get; set; } = [];
+    public List<Position> Path { get; set; } = [];
     public string? Error { get; set; }
 }
