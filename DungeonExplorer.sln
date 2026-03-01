@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36811.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api", "DungeonExplorer\DungeonExplorer.Api.csproj", "{7DE88C02-511B-4A5E-99FD-22838EC66274}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Domain", "Dungeon.Domain\DungeonExplorer.Api.Domain.csproj", "{C98E3DB9-1481-4A49-B4D2-E1277238FD65}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Service", "Dungeon.Service\DungeonExplorer.Api.Service.csproj", "{1B33A9CB-1467-46D4-875D-F5116DC95960}"
@@ -13,16 +11,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Storage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api.Tests", "DungeonExplorer.Api.Tests\DungeonExplorer.Api.Tests.csproj", "{B37E394A-1DFB-4E7A-B863-5279A9E428EC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.runsettings = .runsettings
+	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "dungeonexplorer.client", "DungeonExplorer.Client\dungeonexplorer.client.esproj", "{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonExplorer.Api", "DungeonExplorer.Api\DungeonExplorer.Api.csproj", "{FB2ADBD0-5E25-BB18-5828-ED8CC411C02F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DE88C02-511B-4A5E-99FD-22838EC66274}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C98E3DB9-1481-4A49-B4D2-E1277238FD65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C98E3DB9-1481-4A49-B4D2-E1277238FD65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C98E3DB9-1481-4A49-B4D2-E1277238FD65}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +42,16 @@ Global
 		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B37E394A-1DFB-4E7A-B863-5279A9E428EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D1D83C-8BC6-3F38-ADF4-AFF348FFCA4A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FB2ADBD0-5E25-BB18-5828-ED8CC411C02F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2ADBD0-5E25-BB18-5828-ED8CC411C02F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2ADBD0-5E25-BB18-5828-ED8CC411C02F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2ADBD0-5E25-BB18-5828-ED8CC411C02F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

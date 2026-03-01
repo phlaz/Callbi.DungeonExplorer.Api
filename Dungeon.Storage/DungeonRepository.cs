@@ -1,24 +1,16 @@
 ﻿namespace DungeonExplorer.Api.Storage;
 
-using DungeonExplorer.Api.Domain;
-
-using Microsoft.EntityFrameworkCore;
-
-using System.Threading.Tasks;
-
 public class DungeonRepository(DungeonContext context) : IDungeonRepository
 {
-    public async Task<IDungeon?> AddNewDungeonAsync(IDungeon dungeon)
+    public async Task<bool> AddNewDungeonAsync(IDungeon dungeon)
     {
-        context.Dungeons.Add(new DungeonMap(dungeon));
+        context.Dungeons.Add((Dungeon)dungeon);
         await context.SaveChangesAsync();
-        return dungeon;
+        return true;
     }
-
 
     public async Task<IDungeon?> GetDungeonAsync(int id)
     {
-        return await context.Dungeons.FirstOrDefaultAsync(m => m.Id == id);
+        return await context.Dungeons.Include(m => m.Walls).FirstOrDefaultAsync(m => m.Id == id);
     }
-
 }

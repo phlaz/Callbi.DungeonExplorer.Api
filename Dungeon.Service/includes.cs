@@ -1,0 +1,1 @@
+﻿global using DungeonExplorer.Api.Domain;

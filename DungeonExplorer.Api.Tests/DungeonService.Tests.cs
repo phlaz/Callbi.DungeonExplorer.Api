@@ -1,11 +1,4 @@
-﻿using DungeonExplorer.Api.Domain;
-using DungeonExplorer.Api.Service;
-using DungeonExplorer.Api.Storage;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace DungeonExplorer.Api.Tests;
+﻿namespace DungeonExplorer.Api.Tests;
 
 public class MapServiceTests
 {
@@ -25,7 +18,7 @@ public class MapServiceTests
     public async Task CreateDungeon_ValidDungeon_Succeeds()
     {
         var service = CreateService();
-        var map = new DungeonMap
+        var map = new Dungeon
         {
             Width = 10,
             Height = 10,
@@ -35,15 +28,15 @@ public class MapServiceTests
 
         var created = await service.AddNewDungeonAsync(map);
 
-        Assert.NotNull(created);
-        Assert.Equal(10, created.Width);
+        Assert.True(created);
+        Assert.Equal(10, map.Width);
     }
 
     [Fact]
     public async Task CreateDungeon_InvalidSize_Throws()
     {
         var service = CreateService();
-        var map = new DungeonMap
+        var map = new Dungeon
         {
             Width = 2,
             Height = 2,

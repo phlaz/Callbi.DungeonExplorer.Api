@@ -1,6 +1,4 @@
-﻿using DungeonExplorer.Api.Domain;
-
-namespace DungeonExplorer.Api.Service;
+﻿namespace DungeonExplorer.Api.Service;
 
 public interface IPathfindingService
 {

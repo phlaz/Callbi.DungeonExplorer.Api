@@ -1,0 +1,6 @@
+version: "3.9"
+services:
+  dungeonexplorerapi:
+    ports:
+      - "5000:8080"   # host:container
+      - "5001:8081"

@@ -1,11 +1,9 @@
-﻿using DungeonExplorer.Api.Domain;
-
-namespace DungeonExplorer.Api.Service;
+﻿namespace DungeonExplorer.Api.Service;
 
 public class DungeonService(IDungeonRepository repository, IPathfindingService pathfinding)
     : IDungeonService
 {
-    public async Task<IDungeon?> AddNewDungeonAsync(IDungeon map)
+    public async Task<bool> AddNewDungeonAsync(IDungeon map)
     {
         // Validation
         if(map.Width < 5 || map.Width > 50 || map.Height < 5 || map.Height > 50)

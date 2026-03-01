@@ -1,18 +1,16 @@
-﻿using DungeonExplorer.Api.Domain;
-using Microsoft.EntityFrameworkCore;
-
-namespace DungeonExplorer.Api.Storage;
+﻿namespace DungeonExplorer.Api.Storage;
 
 public class DungeonContext(DbContextOptions<DungeonContext> options) : DbContext(options)
 {
-    public DbSet<DungeonMap> Dungeons { get; set; }
+    public DbSet<Dungeon> Dungeons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Treat Position as a value object
         modelBuilder.Owned<Position>();
+        modelBuilder.Entity<Dungeon>().OwnsOne(d => d.StartPosition);
+        modelBuilder.Entity<Dungeon>().OwnsOne(d => d.Goal);
+        modelBuilder.Entity<Dungeon>().HasMany(d => d.Walls).WithOne().HasForeignKey(w => w.DungeonId);
 
         base.OnModelCreating(modelBuilder);
     }
-
 }
