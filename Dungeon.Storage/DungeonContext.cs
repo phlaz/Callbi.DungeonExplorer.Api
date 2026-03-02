@@ -4,14 +4,14 @@ public class DungeonContext(DbContextOptions<DungeonContext> options) : DbContex
 {
     public DbSet<Dungeon> Dungeons { get; set; }
 
-    public DbSet<Wall> Walls { get; set; }  
+    public DbSet<Obstacle> Obstacles { get; set; }  
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Owned<Position>();
-        modelBuilder.Entity<Dungeon>().OwnsOne(d => d.StartPosition);
+        modelBuilder.Entity<Dungeon>().OwnsOne(d => d.Start);
         modelBuilder.Entity<Dungeon>().OwnsOne(d => d.Goal);
-        modelBuilder.Entity<Dungeon>().HasMany(d => d.Walls).WithOne().HasForeignKey(w => w.DungeonId);
+        modelBuilder.Entity<Dungeon>().HasMany(d => d.Obstacles).WithOne().HasForeignKey(w => w.DungeonId);
 
         base.OnModelCreating(modelBuilder);
     }

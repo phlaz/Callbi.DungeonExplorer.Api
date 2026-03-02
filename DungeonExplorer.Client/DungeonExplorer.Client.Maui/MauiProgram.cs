@@ -17,11 +17,13 @@ namespace DungeonExplorer.Client.Maui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddScoped<HttpClient>(svc => new HttpClient() { BaseAddress = new(@"https://localhost:8080") });
+            builder.Services.AddScoped<HttpClient>(svc => new HttpClient() { BaseAddress = new(@"http://localhost:8080") });
             builder.Services.AddScoped<Dungeon.Dungeon>();
             builder.Services.AddScoped<DungeonService>();
             builder.Services.AddScoped<DungeonViewModel>();
+            builder.Services.AddScoped<DungeonGridViewModel>();
             builder.Services.AddScoped<DungeonPage>();
+            builder.Services.AddScoped<DungeonGrid>();
 
 #if DEBUG
             builder.Logging.AddDebug();

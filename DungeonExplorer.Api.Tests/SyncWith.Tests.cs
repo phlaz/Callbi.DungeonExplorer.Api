@@ -9,14 +9,14 @@ public class SyncWithTests
     public void SyncWith_Should_Handle_Multiple_New_Items_With_Id_Zero()
     {
         // Arrange: existing walls in the dungeon
-        var existing = new List<Wall>
+        var existing = new List<Obstacle>
         {
             new() { Id = 1, X = 5, Y = 5 },
             new() { Id = 2, X = 6, Y = 6 }
         };
 
             // Incoming walls: two new ones (Id = 0) and one update
-            var incoming = new List<Wall>
+            var incoming = new List<Obstacle>
         {
             new() { Id = 1, X = 10, Y = 10 }, // update existing
             new() { Id = 0, X = 1, Y = 1 },   // new
@@ -24,7 +24,7 @@ public class SyncWithTests
         };
 
         // Act
-        existing.SyncWith<Wall, int>(
+        existing.SyncWith<Obstacle, int>(
             incoming,
             (existingWall, incomingWall) =>
             {

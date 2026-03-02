@@ -22,6 +22,7 @@ builder.Services.AddScoped<IDungeonService, DungeonService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
+    config.EnableAnnotations();
     config.SwaggerDoc(Strings.Version, new OpenApiInfo
     {
         Title = Strings.DungeonExplorerAPI,
@@ -99,7 +100,7 @@ if(app.Environment.IsDevelopment())
 using(var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DungeonContext>();
-    //db.Database.EnsureDeleted();
+    db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
     //db.Database.Migrate();
 }

@@ -66,6 +66,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Dungeon\DungeonGrid.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Dungeon\DungeonPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

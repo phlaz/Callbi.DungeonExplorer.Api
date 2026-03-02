@@ -14,7 +14,7 @@ export default function DungeonGrid({ dungeon, path, onWallsChanged, onSaveWalls
     const cells = [];
     for (let y = 0; y < dungeon.height; y++) {
         for (let x = 0; x < dungeon.width; x++) {
-            const isStart = dungeon.startPosition.x === x && dungeon.startPosition.y === y;
+            const isStart = dungeon.start.x === x && dungeon.start.y === y;
             const isGoal = dungeon.goal.x === x && dungeon.goal.y === y;
             const isWall = walls.some((w: any) => w.x === x && w.y === y);
             const isPath = Array.isArray(path) && path.some((p: any) => p.x === x && p.y === y);

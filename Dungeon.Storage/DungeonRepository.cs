@@ -11,7 +11,7 @@ public class DungeonRepository(DungeonContext context) : IDungeonRepository
 
     public async Task<IDungeon?> GetDungeonAsync(int id)
     {
-        return await context.Dungeons.Include(m => m.Walls).FirstOrDefaultAsync(m => m.Id == id);
+        return await context.Dungeons.Include(m => m.Obstacles).FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public Task SaveChangesAsync() => context.SaveChangesAsync();

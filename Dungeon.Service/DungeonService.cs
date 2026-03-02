@@ -21,13 +21,13 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
         return pathfinding.ComputePath(dungeon);
     }
 
-    public async Task<IDungeon?> UpdateWallsAsync(int dungeonId, List<Wall> walls)
+    public async Task<IDungeon?> UpdateObstaclesAsync(int dungeonId, List<Obstacle> walls)
     {
         //reconnect the entity to the change tracker
         var dungeon = await GetDungeonAsync(dungeonId);
         if(dungeon == null) return null;
 
-        var incoming = walls.Select(w => new Wall
+        var incoming = walls.Select(w => new Obstacle
         {
             Id = w.Id,
             X = w.X,
@@ -36,7 +36,7 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
         }).ToList();
 
         //Synchronize the walls collection.
-        dungeon.Walls.SyncWith<Wall, int>(
+        dungeon.Obstacles.SyncWith<Obstacle, int>(
             incoming,
             (existing, incomingItem) =>
             {

@@ -8,7 +8,6 @@ public class DungeonService
 
     public DungeonService(HttpClient httpClient)
     {
-
         this.httpClient = httpClient;
     }
 

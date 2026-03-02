@@ -17,7 +17,7 @@ export async function getPath(id: string) {
   return response.data;
 }
 
-export async function saveWallsToApi(id: number, walls: any[]) {
-    const response = await axios.patch(`${API_URL}/${id}/walls`, walls);
+export async function saveWallsToApi(id: number, obstacles: any[]) {
+    const response = await axios.patch(`${API_URL}/${id}/obstacles`, obstacles);
     return response.data;
 }

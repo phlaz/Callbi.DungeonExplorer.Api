@@ -22,7 +22,7 @@ public class MapServiceTests
         {
             Width = 10,
             Height = 10,
-            StartPosition = new Position { X = 0, Y = 0 },
+            Start = new Position { X = 0, Y = 0 },
             Goal = new Position { X = 9, Y = 9 }
         };
 
@@ -40,7 +40,7 @@ public class MapServiceTests
         {
             Width = 2,
             Height = 2,
-            StartPosition = new Position { X = 0, Y = 0 },
+            Start = new Position { X = 0, Y = 0 },
             Goal = new Position { X = 1, Y = 1 }
         };
 

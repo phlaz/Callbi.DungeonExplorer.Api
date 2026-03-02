@@ -8,11 +8,11 @@ public interface IDungeon
 
     int Height { get; }
 
-    Position StartPosition { get; }
+    Position Start { get; }
 
     Position Goal { get; }
 
-    List<Wall> Walls { get; }
+    List<Obstacle> Obstacles { get; }
 
 }
 

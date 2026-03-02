@@ -10,9 +10,9 @@ public class Dungeon : IDungeon
         Id = copy.Id;
         Width = copy.Width;
         Height = copy.Height;
-        StartPosition = copy.StartPosition;
+        Start = copy.Start;
         Goal = copy.Goal;
-        Walls = [.. copy.Walls];
+        Obstacles = [.. copy.Obstacles];
     }
 
     public int? Id { get; set; }
@@ -21,9 +21,9 @@ public class Dungeon : IDungeon
     
     public int Height { get; set; }
     
-    public Position StartPosition { get; set; } = new Position();
+    public Position Start { get; set; } = new Position();
     
     public Position Goal { get; set; } = new Position();
     
-    public List<Wall> Walls { get; set; } = [];
+    public List<Obstacle> Obstacles { get; set; } = [];
 }

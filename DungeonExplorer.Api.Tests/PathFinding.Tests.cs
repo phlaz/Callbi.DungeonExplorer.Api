@@ -9,9 +9,9 @@ public class PathfindingTests
         {
             Width = 5,
             Height = 5,
-            StartPosition = new Position { X = 0, Y = 0 },
+            Start = new Position { X = 0, Y = 0 },
             Goal = new Position { X = 4, Y = 4 },
-            Walls = []
+            Obstacles = []
         };
 
         var service = new PathfindingService();
@@ -29,9 +29,9 @@ public class PathfindingTests
         {
             Width = 5,
             Height = 5,
-            StartPosition = new Position { X = 0, Y = 0 },
+            Start = new Position { X = 0, Y = 0 },
             Goal = new Position { X = 1, Y = 0 },
-            Walls = [ new Wall{ X = 1, Y = 0 } ]
+            Obstacles = [ new Obstacle{ X = 1, Y = 0 } ]
         };
 
         var service = new PathfindingService();

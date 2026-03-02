@@ -1,6 +1,6 @@
 ﻿namespace DungeonExplorer.Api.Domain;
 
-public class Wall : IIdentifiable<int>
+public class Obstacle : IIdentifiable<int>
 {
     public int Id { get; set; }
 
