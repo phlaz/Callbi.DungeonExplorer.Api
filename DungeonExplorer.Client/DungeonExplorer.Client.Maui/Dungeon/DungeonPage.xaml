@@ -1,0 +1,18 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dungeon="clr-namespace:DungeonExplorer.Client.Maui.Dungeon"
+             x:DataType="dungeon:DungeonViewModel"
+             x:Class="DungeonExplorer.Client.Maui.Dungeon.DungeonPage">
+
+    <VerticalStackLayout Padding="20">
+        <Label Text="Create Dungeon" FontSize="24" />
+        <Entry Placeholder="Width" Text="{Binding Width}" Keyboard="Numeric"/>
+        <Entry Placeholder="Height" Text="{Binding Height}" Keyboard="Numeric"/>
+        <Entry Placeholder="Start X" Text="{Binding StartX}" Keyboard="Numeric"/>
+        <Entry Placeholder="Start Y" Text="{Binding StartY}" Keyboard="Numeric"/>
+        <Entry Placeholder="Goal X" Text="{Binding GoalX}" Keyboard="Numeric"/>
+        <Entry Placeholder="Goal Y" Text="{Binding GoalY}" Keyboard="Numeric"/>
+        <Button Text="Create Dungeon" Command="{Binding CreateDungeonCommand}"/>
+        <Label Text="{Binding ResultMessage}" />
+    </VerticalStackLayout>
+</ContentPage>

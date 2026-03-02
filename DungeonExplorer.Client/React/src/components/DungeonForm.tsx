@@ -32,11 +32,11 @@ export default function DungeonForm({ onCreated }: { onCreated: (dungeon: any) =
       <form onSubmit={handleSubmit} action="javascript:void(0)">
       <h3>Create Dungeon</h3>
       <label>Width:   <input type="number" value={width}  onChange={e => setWidth(+e.target.value)}  /></label>
-      <label>Height:  <input type="number" value={height} onChange={e => setHeight(+e.target.value)} /></label>
+      <label>Height:  <input type="number" value={height} onChange={e => setHeight(+e.target.value)} /></label><br/>
       <label>Start X: <input type="number" value={startX} onChange={e => setStartX(+e.target.value)} /></label>
-      <label>Start Y: <input type="number" value={startY} onChange={e => setStartY(+e.target.value)} /></label>
+      <label>Start Y: <input type="number" value={startY} onChange={e => setStartY(+e.target.value)} /></label><br />
       <label>Goal X:  <input type="number" value={goalX}  onChange={e => setGoalX(+e.target.value)}  /></label>
-      <label>Goal Y:  <input type="number" value={goalY}  onChange={e => setGoalY(+e.target.value)}  /></label>
+      <label>Goal Y:  <input type="number" value={goalY} onChange={e => setGoalY(+e.target.value)} /></label><br />
       <button type="submit">Create</button>
     </form>
   );

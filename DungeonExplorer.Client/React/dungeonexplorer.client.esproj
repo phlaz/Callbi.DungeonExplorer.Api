@@ -7,7 +7,7 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
-    <StartupCommandWorkingDirectory>D:\Source Code\Callbi\DungeonExplorer.Client</StartupCommandWorkingDirectory>
+    <StartupCommandWorkingDirectory>D:\Source Code\Callbi\DungeonExplorer.Client\React</StartupCommandWorkingDirectory>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\.dockerignore">
