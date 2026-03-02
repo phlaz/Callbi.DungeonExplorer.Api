@@ -3,6 +3,7 @@ import { useState } from "react";
 import DungeonForm from "./components/DungeonForm";
 import DungeonGrid from "./components/DungeonGrid";
 import { getPath } from "./api/dungeonService";
+import { saveWallsToApi } from "./api/dungeonService";
 
 function App() {
   const [dungeon, setDungeon] = useState<any>(null);
@@ -22,7 +23,11 @@ function App() {
     <div>
       <DungeonForm onCreated={handleCreated} />
       <button onClick={handlePath} disabled={!dungeon}>Compute Path</button>
-      <DungeonGrid dungeon={dungeon} path={path} />
+          <DungeonGrid dungeon={dungeon} path={path} onSaveWalls={async (walls) => {
+              console.log("Saving walls:", walls);
+              await saveWallsToApi(dungeon.id, walls);
+          }}
+/>
     </div>
   );
 }

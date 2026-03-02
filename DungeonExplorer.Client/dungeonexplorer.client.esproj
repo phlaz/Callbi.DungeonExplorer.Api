@@ -9,4 +9,10 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
     <StartupCommandWorkingDirectory>D:\Source Code\Callbi\DungeonExplorer.Client</StartupCommandWorkingDirectory>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\.dockerignore">
+      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+      <Link>.dockerignore</Link>
+    </None>
+  </ItemGroup>
 </Project>

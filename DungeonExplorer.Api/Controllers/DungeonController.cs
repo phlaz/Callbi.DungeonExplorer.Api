@@ -28,4 +28,16 @@ public class DungeonController(IDungeonService service) : ControllerBase
         if(result.Error != null) return BadRequest(result);
         return Ok(result);
     }
+
+    [HttpPatch("{id}/walls")]
+    public async Task<IActionResult> UpdateWalls(int id, [FromBody] List<Wall> walls)
+    {
+        var updatedDungeon = await service.UpdateWallsAsync(id, walls);
+        if(updatedDungeon == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(updatedDungeon);
+    }
 }

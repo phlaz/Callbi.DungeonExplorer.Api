@@ -4,6 +4,8 @@ public class DungeonContext(DbContextOptions<DungeonContext> options) : DbContex
 {
     public DbSet<Dungeon> Dungeons { get; set; }
 
+    public DbSet<Wall> Walls { get; set; }  
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Owned<Position>();

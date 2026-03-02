@@ -7,6 +7,8 @@ public interface IDungeonService
     Task<IDungeon?> GetDungeonAsync(int id);
 
     Task<PathResult> GetRouteThroughDungeonAsync(int id);
+
+    Task<IDungeon?> UpdateWallsAsync(int id, List<Wall> walls);
 }
 
 

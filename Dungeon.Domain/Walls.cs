@@ -1,6 +1,6 @@
 ﻿namespace DungeonExplorer.Api.Domain;
 
-public class Wall
+public class Wall : IIdentifiable<int>
 {
     public int Id { get; set; }
 
@@ -10,4 +10,6 @@ public class Wall
 
     // Dungeon Foreign key
     public int DungeonId { get; set; }
+
+    public int CompareTo(IIdentifiable<int>? other) => CompareTo(other);
 }

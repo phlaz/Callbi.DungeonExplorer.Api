@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5292/api/dungeons";
+const API_URL = "http://localhost:8080/api/dungeons";
 
 export async function createDungeon(map: any) {
   const response = await axios.post(API_URL, map);
@@ -15,4 +15,9 @@ export async function getDungeon(id: string) {
 export async function getPath(id: string) {
   const response = await axios.get(`${API_URL}/${id}/path`);
   return response.data;
+}
+
+export async function saveWallsToApi(id: number, walls: any[]) {
+    const response = await axios.patch(`${API_URL}/${id}/walls`, walls);
+    return response.data;
 }

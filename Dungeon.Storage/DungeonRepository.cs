@@ -13,4 +13,6 @@ public class DungeonRepository(DungeonContext context) : IDungeonRepository
     {
         return await context.Dungeons.Include(m => m.Walls).FirstOrDefaultAsync(m => m.Id == id);
     }
+
+    public Task SaveChangesAsync() => context.SaveChangesAsync();
 }
