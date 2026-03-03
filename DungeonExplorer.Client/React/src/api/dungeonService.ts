@@ -14,10 +14,16 @@ export async function getDungeon(id: string) {
 
 //Streaming version of getPath
 export async function* streamPath(id: string) {
-    const response = await fetch(`http://localhost:8080/api/dungeons/${id}/path`);
+    const response = await fetch(`${API_URL}/${id}/path`);
 
     if (!response.body) {
         throw new Error("No response body");
+    }
+
+    // Handle non-200 responses (ApiError JSON)
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.details || "Unknown error");
     }
 
     const reader = response.body.getReader();
@@ -29,16 +35,12 @@ export async function* streamPath(id: string) {
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
-
-        // Split on newlines (NDJSON format)
-        let pathResponse = buffer;
         const lines = buffer.split("\n");
-
-        buffer = lines.pop()!; // keep incomplete line
+        buffer = lines.pop()!;
 
         for (const line of lines) {
             if (line.trim().length > 0) {
-                yield JSON.parse(line); // yield each position immediately
+                yield JSON.parse(line);
             }
         }
     }

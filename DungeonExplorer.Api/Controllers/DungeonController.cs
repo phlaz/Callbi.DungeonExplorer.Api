@@ -71,16 +71,15 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     [HttpGet("{id}/path")]
     [Produces("application/x-ndjson")]
     [SwaggerResponse(StatusCodes.Status200OK, "Path computed successfully", typeof(IAsyncEnumerable<Position>))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Path computation failed", typeof(ApiError))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Dungeon not found", typeof(ApiError))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error", typeof(ApiError))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Path computation failed")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Dungeon not found")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error")]
     public async Task StreamPath(int id)
     {
-        // A05: Injection – validate input
         if(id <= 0)
         {
             Response.StatusCode = StatusCodes.Status400BadRequest;
-            await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Invalid dungeon ID", null)) + "\n");
+            await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Invalid dungeon ID", null) + "\n"));
             return;
         }
 
@@ -91,14 +90,22 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
             if(result == null)
             {
                 Response.StatusCode = StatusCodes.Status404NotFound;
-                await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Dungeon not found",null)) + "\n");
+                await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Dungeon not found", null) + "\n"));
                 return;
             }
 
             if(result.Error != null)
             {
                 Response.StatusCode = StatusCodes.Status400BadRequest;
-                await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Path computation failed", result.Error)) + "\n");
+
+                var apiError = new ApiError("Path computation failed", result.Error);
+
+                var json = JsonSerializer.Serialize(apiError, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+
+                await Response.WriteAsync(json + "\n");
                 return;
             }
 
@@ -106,20 +113,19 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
             {
                 var json = JsonSerializer.Serialize(p, new JsonSerializerOptions
                 {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase // A02: Security Misconfiguration – consistent JSON naming
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
 
                 await Response.WriteAsync(json + "\n");
-                await Response.Body.FlushAsync(); // stream immediately
+                await Response.Body.FlushAsync();
             }
         }
         catch(Exception ex)
         {
-            // A09: Logging & Monitoring – log unexpected errors
             logger.LogError(ex, "Unexpected error computing path for dungeon {DungeonId}", id);
 
             Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Unexpected server error", null)) + "\n");
+            await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Unexpected server error", null) + "\n"));
         }
     }
 }
