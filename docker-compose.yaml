@@ -10,13 +10,15 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8080
 
-  client:
-    build:
-      context: ./DungeonExplorer.Client
-      dockerfile: Dockerfile   # client Dockerfile inside DungeonExplorer.Client
-    image: dungeonexplorer-client:prod
-    container_name: dungeonexplorer-client
-    ports:
-      - "3000:80"
-    depends_on:
-      - api
+  react-client:
+      build:
+        context: ./DungeonExplorer.Client/React
+        dockerfile: Dockerfile
+      image: dungeonexplorer-react:prod
+      container_name: dungeonexplorer-react
+      ports:
+        - "3000:80"
+      depends_on:
+        - api
+      environment:
+        - VITE_API_URL=http://api:8080
