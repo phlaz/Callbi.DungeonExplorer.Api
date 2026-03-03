@@ -21,12 +21,12 @@ public class PathfindingService : IPathfindingService
             if(current.X == map.Goal.X && current.Y == map.Goal.Y)
                 return new PathResult { Path = path };
 
-            foreach(var neighbour in GetNeighbors(current, map))
+            foreach(var neighbor in GetNeighbors(current, map))
             {
-                if(!visited.Contains((neighbour.X, neighbour.Y)))
+                if(!visited.Contains((neighbor.X, neighbor.Y)))
                 {
-                    visited.Add((neighbour.X, neighbour.Y));
-                    var newPath = new List<Position>(path) { neighbour };
+                    visited.Add((neighbor.X, neighbor.Y));
+                    var newPath = new List<Position>(path) { neighbor };
                     queue.Enqueue(newPath);
                 }
             }

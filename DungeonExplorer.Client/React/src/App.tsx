@@ -2,7 +2,7 @@
 import { useState } from "react";
 import DungeonForm from "./components/DungeonForm";
 import DungeonGrid from "./components/DungeonGrid";
-import { getPath } from "./api/dungeonService";
+import { streamPath } from "./api/dungeonService";
 import { saveWallsToApi } from "./api/dungeonService";
 
 function App() {
@@ -11,13 +11,22 @@ function App() {
 
   const handleCreated = (d: any) => setDungeon(d);
 
-  const handlePath = async () => {
-    if (!dungeon) return;
-    const result = await getPath(dungeon.id);
-    
-    console.log("Path result:", result);
-    setPath(result.path);
-  };
+    const handlePath = async () => {
+        if (!dungeon) return;
+
+        setPath([]); // reset path before streaming
+
+        for await (const position of streamPath(dungeon.id)) {
+            // Add a delay before plotting each step
+            await new Promise(resolve => setTimeout(resolve, 250)); // 300ms delay
+
+            console.log("Got position:", position);
+            setPath(prev => [...prev, position]); // update incrementally
+        }
+
+        console.log("Path complete");
+    };
+
 
   return (
     <div>

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DungeonExplorer.Domain\DungeonExplorer.Api.Domain.csproj" />
     <ProjectReference Include="..\DungeonExplorer.Storage\DungeonExplorer.Api.Storage.csproj" />
   </ItemGroup>

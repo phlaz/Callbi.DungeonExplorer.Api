@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/DungeonExplorer.Api/dungeon.db-shm
+/DungeonExplorer.Api/dungeon.db-wal
+/DungeonExplorer.Api/dungeon.db

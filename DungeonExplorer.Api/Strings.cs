@@ -11,4 +11,5 @@ internal static class Strings
     public const string Authorization = "Authorization";
     public const string DataSource = "Data Source=dungeon.db";
     public const string ApplicationJson = "application/json";
+    public const string ApplicationNDJson = "application/x-ndjson";
 }
