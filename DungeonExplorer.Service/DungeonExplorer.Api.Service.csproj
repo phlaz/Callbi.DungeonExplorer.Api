@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dungeon.Domain\DungeonExplorer.Api.Domain.csproj" />
-    <ProjectReference Include="..\Dungeon.Storage\DungeonExplorer.Api.Storage.csproj" />
     <ProjectReference Include="..\DungeonExplorer.Domain\DungeonExplorer.Api.Domain.csproj" />
     <ProjectReference Include="..\DungeonExplorer.Storage\DungeonExplorer.Api.Storage.csproj" />
   </ItemGroup>

@@ -1,0 +1,22 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile   # API Dockerfile at solution root
+    image: dungeonexplorer-api:prod
+    container_name: dungeonexplorer-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+
+  client:
+    build:
+      context: ./DungeonExplorer.Client
+      dockerfile: Dockerfile   # client Dockerfile inside DungeonExplorer.Client
+    image: dungeonexplorer-client:prod
+    container_name: dungeonexplorer-client
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
