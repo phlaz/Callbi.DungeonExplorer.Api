@@ -4,7 +4,7 @@ internal static class Strings
 {
     public const string DefaultPolicy = "DefaultPolicy";
     public const string Version = "v1";
-    public const string FrontendOrigin = "http://localhost:3000";
+    public const string FrontendOrigin = "FrontendOrigin";
     public const string DungeonExplorerAPI = "Dungeon Explorer API";
     public const string Bearer = "Bearer";
     public const string SwaggerUrl = $"/swagger/{Version}/swagger.json";

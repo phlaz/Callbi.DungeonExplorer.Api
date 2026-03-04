@@ -94,9 +94,11 @@ builder.Services.AddSwaggerGen(config =>
 // --- CORS (restrict origins in production) ---
 builder.Services.AddCors(options =>
 {
+    var frontend = builder.Configuration[Strings.FrontendOrigin]
+        ?? throw new InvalidOperationException("FrontendOrigin config setting does not exist");
     options.AddPolicy(Strings.DefaultPolicy, policy =>
     {
-        policy.WithOrigins(Strings.FrontendOrigin) // frontend origin
+        policy.WithOrigins(frontend) // frontend origin
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

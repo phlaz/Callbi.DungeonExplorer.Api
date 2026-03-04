@@ -50,7 +50,7 @@ function App() {
     }
 
     return (
-        <div>
+        <div className="app-content">
             <button onClick={handleLogout} style={{ marginBottom: "10px" }}>
                 Logout
             </button>
