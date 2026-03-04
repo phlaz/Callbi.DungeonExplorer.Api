@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DungeonExplorer.Api.Storage.Migrations
 {
     [DbContext(typeof(DungeonDBContext))]
-    [Migration("20260303130300_InitialIdentity")]
-    partial class InitialIdentity
+    [Migration("20260304130817_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace DungeonExplorer.Api.Storage.Migrations
                     b.Property<int>("DungeonId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("DungeonId1")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("X")
                         .HasColumnType("INTEGER");
 
@@ -55,6 +58,8 @@ namespace DungeonExplorer.Api.Storage.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DungeonId");
+
+                    b.HasIndex("DungeonId1");
 
                     b.ToTable("Obstacles");
                 });
@@ -309,6 +314,12 @@ namespace DungeonExplorer.Api.Storage.Migrations
                         .HasForeignKey("DungeonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("DungeonExplorer.Api.Domain.Dungeon", "Dungeon")
+                        .WithMany()
+                        .HasForeignKey("DungeonId1");
+
+                    b.Navigation("Dungeon");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

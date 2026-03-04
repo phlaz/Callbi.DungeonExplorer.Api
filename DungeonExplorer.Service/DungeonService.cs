@@ -5,7 +5,7 @@ namespace DungeonExplorer.Api.Service;
 public class DungeonService(IDungeonRepository repository, IPathfindingService pathfinding)
     : IDungeonService
 {
-    public async Task<bool> AddNewDungeonAsync(IDungeon dungeon)
+    public async Task<bool> AddNewDungeonAsync(Dungeon dungeon)
     {
         // Validation
         if(dungeon.Width < 5 || dungeon.Width > 50 || dungeon.Height < 5 || dungeon.Height > 50)
@@ -13,10 +13,29 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
             throw new ArgumentException("Invalid grid size");
         }
 
+        if(!IsWithinDungeon(dungeon, dungeon.Start))
+        {
+            throw new ArgumentException("Start is outside the dungeon");
+        }
+
+        if(!IsWithinDungeon(dungeon, dungeon.Goal))
+        {
+            throw new ArgumentException("Goal is outside the dungeon");
+        }
+
+        dungeon.Obstacles = [.. dungeon.Obstacles.Where(o => IsWithinDungeon(dungeon, new(o.X, o.Y)))];
+        foreach(var obstacle in dungeon.Obstacles)
+        {
+            if(obstacle.DungeonId == 0)
+            {
+                obstacle.Dungeon = dungeon;
+            }
+        }
+
         return await repository.AddNewDungeonAsync(dungeon);
     }
 
-    public async Task<IDungeon?> GetDungeonAsync(int id) => await repository.GetDungeonAsync(id);
+    public async Task<Dungeon?> GetDungeonAsync(int id) => await repository.GetDungeonAsync(id);
 
     public async Task<PathResult> GetRouteThroughDungeonAsync(int id)
     {
@@ -25,14 +44,14 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
         return pathfinding.ComputePath(dungeon);
     }
 
-    public async Task<IDungeon?> UpdateObstaclesAsync(int dungeonId, List<Obstacle> obstacles)
+    public async Task<Dungeon?> UpdateObstaclesAsync(int dungeonId, List<Obstacle> obstacles)
     {
         //reconnect the entity to the change tracker
         var dungeon = await GetDungeonAsync(dungeonId);
         if(dungeon == null) return null;
 
         var incoming = obstacles
-            .Where(obstacle => IsObstacleWithinDungeon(dungeon, obstacle))
+            .Where(obstacle => IsWithinDungeon(dungeon, new(obstacle.X, obstacle.Y)))
             .Select(obstacle => new Obstacle
             {
                 Id = obstacle.Id,
@@ -54,6 +73,6 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
         return dungeon;
     }
 
-    internal bool IsObstacleWithinDungeon(IDungeon dungeon, Obstacle o) => 
-        o.X >= 0 && o.X < dungeon.Width && o.Y >= 0 && o.Y < dungeon.Height;
+    internal bool IsWithinDungeon(IDungeon dungeon, Position position) => 
+        position.X >= 0 && position.X < dungeon.Width && position.Y >= 0 && position.Y < dungeon.Height;
 }

@@ -8,6 +8,8 @@ export default function DungeonForm({ onCreated }: { onCreated: (dungeon: any) =
   const [startY, setStartY] = useState(0);
   const [goalX, setGoalX] = useState(9);
   const [goalY, setGoalY] = useState(9);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -16,16 +18,23 @@ export default function DungeonForm({ onCreated }: { onCreated: (dungeon: any) =
       height,
       start: { x: startX, y: startY },
       goal: { x: goalX, y: goalY },
-        walls: [
+        obstacles: [
             { x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 },
             { x: 4, y: 1 }, { x: 4, y: 1 }, { x: 4, y: 1 },
             { x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 }, { x: 6, y: 4 },
             { x: 0, y: 6 }, { x: 1, y: 6 }, { x: 2, y: 6 },
             { x: 0, y: 8 }, { x: 1, y: 8 }, { x: 2, y: 8 },
         ] // hardcoded for demo
-    };
-    const result = await createDungeon(dungeon);
-    onCreated(result);
+      };
+      try {
+          const result = await createDungeon(dungeon);
+          setErrorMessage(null);
+          onCreated(result);
+      }
+      catch (err: any) {
+          setErrorMessage(err.error || "Failed to create dungeon");
+      }
+    
   };
 
   return (
@@ -37,7 +46,12 @@ export default function DungeonForm({ onCreated }: { onCreated: (dungeon: any) =
       <label>Start Y: <input type="number" value={startY} onChange={e => setStartY(+e.target.value)} /></label><br />
       <label>Goal X:  <input type="number" value={goalX}  onChange={e => setGoalX(+e.target.value)}  /></label>
       <label>Goal Y:  <input type="number" value={goalY} onChange={e => setGoalY(+e.target.value)} /></label><br />
-      <button type="submit">Create</button>
+    <button type="submit">Create</button>
+
+    {errorMessage && (
+        <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
+    )}
+
     </form>
   );
 }

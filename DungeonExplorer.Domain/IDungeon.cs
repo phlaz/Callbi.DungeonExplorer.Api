@@ -2,16 +2,16 @@
 
 public interface IDungeon
 {
-    int? Id { get; }
+    int Id { get; set; }
 
-    int Width { get; }
+    int Width { get; set; }
 
-    int Height { get; }
+    int Height { get; set; }
 
-    Position Start { get; }
+    Position Start { get; set; }
 
-    Position Goal { get; }
+    Position Goal { get; set; }
 
-    List<Obstacle> Obstacles { get; }
+    ICollection<Obstacle> Obstacles { get; set; }
 }
 

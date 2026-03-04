@@ -55,7 +55,7 @@ public class MapServiceTests
         var obstacle = new Obstacle { X = 5, Y = 5 };
         DungeonService service = CreateService();
 
-        Assert.True(service.IsObstacleWithinDungeon(dungeon, obstacle));
+        Assert.True(service.IsWithinDungeon(dungeon, new(obstacle.X, obstacle.Y)));
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class MapServiceTests
         var obstacle = new Obstacle { X = 10, Y = 5 }; // X is equal to Width, outside
         DungeonService service = CreateService();
 
-        Assert.False(service.IsObstacleWithinDungeon(dungeon, obstacle));
+        Assert.False(service.IsWithinDungeon(dungeon, new(obstacle.X, obstacle.Y)));
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class MapServiceTests
         var obstacle = new Obstacle { X = -1, Y = 0 };
         DungeonService service = CreateService();
 
-        Assert.False(service.IsObstacleWithinDungeon(dungeon, obstacle));
+        Assert.False(service.IsWithinDungeon(dungeon, new (obstacle.X, obstacle.Y)));
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class MapServiceTests
         var obstacle = new Obstacle { X = 0, Y = 9 }; // valid boundary
         DungeonService service = CreateService();
 
-        Assert.True(service.IsObstacleWithinDungeon(dungeon, obstacle));
+        Assert.True(service.IsWithinDungeon(dungeon, new(obstacle.X, obstacle.Y)));
     }
 }

@@ -2,13 +2,13 @@
 
 public interface IDungeonService
 {
-    Task<bool> AddNewDungeonAsync(IDungeon model);
+    Task<bool> AddNewDungeonAsync(Dungeon model);
 
-    Task<IDungeon?> GetDungeonAsync(int id);
+    Task<Dungeon?> GetDungeonAsync(int id);
 
     Task<PathResult> GetRouteThroughDungeonAsync(int id);
 
-    Task<IDungeon?> UpdateObstaclesAsync(int id, List<Obstacle> walls);
+    Task<Dungeon?> UpdateObstaclesAsync(int id, List<Obstacle> obstacles);
 }
 
 

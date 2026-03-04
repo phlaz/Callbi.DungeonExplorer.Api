@@ -3,8 +3,14 @@ import axiosClient, { serverUrl } from "./axiosClient";
 const API_URL = serverUrl + "/dungeons";
 
 export async function createDungeon(map: any) {
-    const response = await axiosClient.post(`${API_URL}`, map);
-  return response.data;
+    try {
+        const response = await axiosClient.post(`${API_URL}`, map);
+        return response.data;
+    }
+    catch (err: any) {
+        if (err.response) throw err.response.data;
+        throw { error: "Network error", details: err.message };
+    }
 }
 
 export async function getDungeon(id: string) {

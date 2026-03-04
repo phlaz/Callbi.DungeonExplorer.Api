@@ -1,20 +1,18 @@
-﻿
-
-namespace DungeonExplorer.Api.Tests;
+﻿namespace DungeonExplorer.Api.Tests;
 
 public class SyncWithTests
 {
     [Fact]
     public void SyncWith_Should_Handle_Multiple_New_Items_With_Id_Zero()
     {
-        // Arrange: existing walls in the dungeon
+        // Arrange: existing obstacles in the dungeon
         var existing = new List<Obstacle>
         {
             new() { Id = 1, X = 5, Y = 5 },
             new() { Id = 2, X = 6, Y = 6 }
         };
 
-            // Incoming walls: two new ones (Id = 0) and one update
+            // Incoming obstacles: two new ones (Id = 0) and one update
             var incoming = new List<Obstacle>
         {
             new() { Id = 1, X = 10, Y = 10 }, // update existing
@@ -25,10 +23,10 @@ public class SyncWithTests
         // Act
         existing.SyncWith<Obstacle, int>(
             incoming,
-            (existingWall, incomingWall) =>
+            (existingObstacle, incomingObstacle) =>
             {
-                existingWall.X = incomingWall.X;
-                existingWall.Y = incomingWall.Y;
+                existingObstacle.X = incomingObstacle.X;
+                existingObstacle.Y = incomingObstacle.Y;
             });
 
         // Assert

@@ -2,6 +2,7 @@
 
 public class Obstacle : IIdentifiable<int>
 {
+    [Key]
     public int Id { get; set; }
 
     public int X { get; set; }
@@ -10,6 +11,9 @@ public class Obstacle : IIdentifiable<int>
 
     // Dungeon Foreign key
     public int DungeonId { get; set; }
+
+    [JsonIgnore]
+    public Dungeon? Dungeon { get; set; }
 
     public int CompareTo(IIdentifiable<int>? other) => CompareTo(other);
 }

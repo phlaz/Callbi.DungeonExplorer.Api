@@ -13,7 +13,7 @@ public interface IWriteDungeonRepository<in TDungeon>
 }
 
 public interface IDungeonRepository
-    : IReadDungeonRepository<IDungeon>, IWriteDungeonRepository<IDungeon>
+    : IReadDungeonRepository<Dungeon>, IWriteDungeonRepository<Dungeon>
 {
     Task SaveChangesAsync();
 }

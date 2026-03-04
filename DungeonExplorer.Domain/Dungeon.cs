@@ -1,4 +1,6 @@
-﻿namespace DungeonExplorer.Api.Domain;
+﻿
+
+namespace DungeonExplorer.Api.Domain;
 
 public class Dungeon : IDungeon
 {
@@ -15,7 +17,8 @@ public class Dungeon : IDungeon
         Obstacles = [.. copy.Obstacles];
     }
 
-    public int? Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 
     public int Width { get; set; }
     
@@ -25,5 +28,5 @@ public class Dungeon : IDungeon
     
     public Position Goal { get; set; } = new Position();
     
-    public List<Obstacle> Obstacles { get; set; } = [];
+    public ICollection<Obstacle> Obstacles { get; set; } = [];
 }

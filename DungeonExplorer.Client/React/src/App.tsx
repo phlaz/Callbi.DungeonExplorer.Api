@@ -18,6 +18,7 @@ function App() {
         setDungeon(clearedDungeon);
         setPath([]);
         setErrorMessage(null);
+        setDungeon(dungeon);
     };
 
     const handlePath = async () => {

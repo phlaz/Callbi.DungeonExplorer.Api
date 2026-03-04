@@ -20,12 +20,19 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     public async Task<IActionResult> Create([FromBody] Dungeon dungeon)
     {
         ArgumentNullException.ThrowIfNull(dungeon, nameof(dungeon));
-        
-        await service.AddNewDungeonAsync(dungeon);
 
-        var result = CreatedAtAction(nameof(Get), new { id = dungeon.Id }, dungeon);
-        logger.LogInformation("New Dungeon created, Id: {id}", dungeon.Id);
-        return result;
+        try
+        {
+            await service.AddNewDungeonAsync(dungeon);
+
+            var result = CreatedAtAction(nameof(Create), new { id = dungeon.Id }, dungeon);
+            logger.LogInformation("New Dungeon created, Id: {id}", dungeon.Id);
+            return result;
+        }
+        catch(ArgumentException x)
+        {
+            return BadRequest(new { error = x.Message });
+        }
     }
 
 

@@ -6,24 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DungeonExplorer.Api.Storage.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialIdentity : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Wall");
-
-            migrationBuilder.RenameColumn(
-                name: "StartPosition_Y",
-                table: "Dungeons",
-                newName: "Start_Y");
-
-            migrationBuilder.RenameColumn(
-                name: "StartPosition_X",
-                table: "Dungeons",
-                newName: "Start_X");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -64,24 +51,21 @@ namespace DungeonExplorer.Api.Storage.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Obstacles",
+                name: "Dungeons",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    X = table.Column<int>(type: "INTEGER", nullable: false),
-                    Y = table.Column<int>(type: "INTEGER", nullable: false),
-                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Width = table.Column<int>(type: "INTEGER", nullable: false),
+                    Height = table.Column<int>(type: "INTEGER", nullable: false),
+                    Start_X = table.Column<int>(type: "INTEGER", nullable: false),
+                    Start_Y = table.Column<int>(type: "INTEGER", nullable: false),
+                    Goal_X = table.Column<int>(type: "INTEGER", nullable: false),
+                    Goal_Y = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Obstacles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Obstacles_Dungeons_DungeonId",
-                        column: x => x.DungeonId,
-                        principalTable: "Dungeons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Dungeons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -190,6 +174,33 @@ namespace DungeonExplorer.Api.Storage.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Obstacles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    X = table.Column<int>(type: "INTEGER", nullable: false),
+                    Y = table.Column<int>(type: "INTEGER", nullable: false),
+                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false),
+                    DungeonId1 = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Obstacles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Obstacles_Dungeons_DungeonId",
+                        column: x => x.DungeonId,
+                        principalTable: "Dungeons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Obstacles_Dungeons_DungeonId1",
+                        column: x => x.DungeonId1,
+                        principalTable: "Dungeons",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -231,6 +242,11 @@ namespace DungeonExplorer.Api.Storage.Migrations
                 name: "IX_Obstacles_DungeonId",
                 table: "Obstacles",
                 column: "DungeonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Obstacles_DungeonId1",
+                table: "Obstacles",
+                column: "DungeonId1");
         }
 
         /// <inheritdoc />
@@ -260,41 +276,8 @@ namespace DungeonExplorer.Api.Storage.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.RenameColumn(
-                name: "Start_Y",
-                table: "Dungeons",
-                newName: "StartPosition_Y");
-
-            migrationBuilder.RenameColumn(
-                name: "Start_X",
-                table: "Dungeons",
-                newName: "StartPosition_X");
-
-            migrationBuilder.CreateTable(
-                name: "Wall",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    X = table.Column<int>(type: "INTEGER", nullable: false),
-                    Y = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Wall", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Wall_Dungeons_DungeonId",
-                        column: x => x.DungeonId,
-                        principalTable: "Dungeons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Wall_DungeonId",
-                table: "Wall",
-                column: "DungeonId");
+            migrationBuilder.DropTable(
+                name: "Dungeons");
         }
     }
 }

@@ -67,7 +67,7 @@ builder.Services.AddSwaggerGen(config =>
     {
         Title = Strings.DungeonExplorerAPI,
         Version = Strings.Version,
-        Description = "Secure API following OWASP Top 10 best practices"
+        Description = "Secure API following OWASP best practices"
     });
 
     config.AddSecurityDefinition(Strings.Bearer, new OpenApiSecurityScheme
@@ -132,7 +132,7 @@ app.UseExceptionHandler(errorApp =>
 });
 
 // --- Swagger ---
-if(app.Environment.IsDevelopment())
+//if(app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(config =>

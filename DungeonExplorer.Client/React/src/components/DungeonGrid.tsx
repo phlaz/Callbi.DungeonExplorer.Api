@@ -12,15 +12,15 @@ export default function DungeonGrid({ dungeon, path, onObstaclesChanged, onSaveO
         setObstacles(dungeon?.obstacles ?? []);
     }, [dungeon]);
 
-    // Keep walls in local state so you can add/remove them interactively
-    const [obstacles, setObstacles] = useState(dungeon.walls || []);
+    // Keep obstacles in local state so you can add/remove them interactively
+    const [obstacles, setObstacles] = useState(dungeon.obstacles || []);
     
     const cells = [];
     for (let y = 0; y < dungeon.height; y++) {
         for (let x = 0; x < dungeon.width; x++) {
             const isStart = dungeon.start.x === x && dungeon.start.y === y;
             const isGoal = dungeon.goal.x === x && dungeon.goal.y === y;
-            const isWall = obstacles.some((w: any) => w.x === x && w.y === y);
+            const isObstacle = obstacles.some((o: any) => o.x === x && o.y === y);
             const isPath = Array.isArray(path) && path.some((p: any) => p.x === x && p.y === y);
 
             let style: React.CSSProperties = {
@@ -34,7 +34,7 @@ export default function DungeonGrid({ dungeon, path, onObstaclesChanged, onSaveO
 
             if (isStart) style.backgroundColor = "green";
             else if (isGoal) style.backgroundColor = "gold";
-            else if (isWall) style.backgroundColor = "black";
+            else if (isObstacle) style.backgroundColor = "black";
             else if (isPath) style.backgroundColor = "blue";
 
             cells.push(
@@ -49,10 +49,10 @@ export default function DungeonGrid({ dungeon, path, onObstaclesChanged, onSaveO
     }
 
     const toggleObstacle = (x: number, y: number) => {
-        const exists = obstacles.some((w: any) => w.x === x && w.y === y);
+        const exists = obstacles.some((o: any) => o.x === x && o.y === y);
         let newObstacles;
         if (exists) {
-            newObstacles = obstacles.filter((w: any) => !(w.x === x && w.y === y));
+            newObstacles = obstacles.filter((o: any) => !(o.x === x && o.y === y));
         } else {
             newObstacles = [...obstacles, { x, y }];
         }
@@ -63,7 +63,7 @@ export default function DungeonGrid({ dungeon, path, onObstaclesChanged, onSaveO
 
     const handleSave = () => {
         if (onSaveObstacles) {
-            onSaveObstacles(obstacles);   // <-- call parent with updated walls
+            onSaveObstacles(obstacles);   // <-- call parent with updated obstacles
         }
     };
 
