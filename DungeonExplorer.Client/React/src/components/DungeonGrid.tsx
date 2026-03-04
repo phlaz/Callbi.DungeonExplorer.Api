@@ -68,7 +68,7 @@ export default function DungeonGrid({ dungeon, path, onObstaclesChanged, onSaveO
     };
 
     return <div>{cells}<br/><b>Click the grid to add and remove obstacles. Dont forget to Save!</b><br/><button onClick={handleSave} style={{ marginTop: "10px" }}>
-        Save Grid
+        Save Obstacles
     </button>
 </div>;
 }

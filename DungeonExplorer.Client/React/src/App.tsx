@@ -14,7 +14,6 @@ function App() {
     );
 
     const handleCreated = (dungeon: any) => {
-        //start with a blank dungeon
         const clearedDungeon = { ...dungeon, obstacles: [] };
         setDungeon(clearedDungeon);
         setPath([]);
@@ -45,31 +44,35 @@ function App() {
         setPath([]);
     };
 
-    if (!token) {
-        return <LoginForm onLoginSuccess={(jwt) => setToken(jwt)} />;
-    }
-
     return (
         <div className="app-content">
-            <button onClick={handleLogout} style={{ marginBottom: "10px" }}>
-                Logout
-            </button>
+            <h1>Dungeon Explorer</h1>
 
-            <DungeonForm onCreated={handleCreated} />
-            <button onClick={handlePath} disabled={!dungeon}>
-                Compute Path
-            </button>
-            {errorMessage && (
-                <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
+            {!token ? (
+                <LoginForm onLoginSuccess={(jwt) => setToken(jwt)} />
+            ) : (
+                <>
+                    <button onClick={handleLogout} style={{ marginBottom: "10px" }}>
+                        Logout
+                    </button>
+
+                    <DungeonForm onCreated={handleCreated} />
+                    <button onClick={handlePath} disabled={!dungeon}>
+                        Compute Path
+                    </button>
+                    {errorMessage && (
+                        <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
+                    )}
+                    <DungeonGrid
+                        dungeon={dungeon}
+                        path={path}
+                        onSaveObstacles={async (obstacles) => {
+                            console.log("Saving obstacles:", obstacles);
+                            await saveObstaclesToApi(dungeon.id, obstacles);
+                        }}
+                    />
+                </>
             )}
-            <DungeonGrid
-                dungeon={dungeon}
-                path={path}
-                onSaveObstacles={async (obstacles) => {
-                    console.log("Saving obstacles:", obstacles);
-                    await saveObstaclesToApi(dungeon.id, obstacles);
-                }}
-            />
         </div>
     );
 }
