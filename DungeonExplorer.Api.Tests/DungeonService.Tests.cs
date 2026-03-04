@@ -38,12 +38,53 @@ public class MapServiceTests
         var service = CreateService();
         var map = new Dungeon
         {
-            Width = 2,
+            Width = 20,
             Height = 2,
             Start = new Position { X = 0, Y = 0 },
             Goal = new Position { X = 1, Y = 1 }
         };
 
         await Assert.ThrowsAsync<System.ArgumentException>(() => service.AddNewDungeonAsync(map));
+    }
+
+    
+    [Fact]
+    public void ObstacleInsideDungeon_ReturnsTrue()
+    {
+        var dungeon = new Dungeon { Width = 10, Height = 10 };
+        var obstacle = new Obstacle { X = 5, Y = 5 };
+        DungeonService service = CreateService();
+
+        Assert.True(service.IsObstacleWithinDungeon(dungeon, obstacle));
+    }
+
+    [Fact]
+    public void ObstacleOutsideDungeon_ReturnsFalse()
+    {
+        var dungeon = new Dungeon { Width = 10, Height = 10 };
+        var obstacle = new Obstacle { X = 10, Y = 5 }; // X is equal to Width, outside
+        DungeonService service = CreateService();
+
+        Assert.False(service.IsObstacleWithinDungeon(dungeon, obstacle));
+    }
+
+    [Fact]
+    public void ObstacleNegativeCoordinates_ReturnsFalse()
+    {
+        var dungeon = new Dungeon { Width = 10, Height = 10 };
+        var obstacle = new Obstacle { X = -1, Y = 0 };
+        DungeonService service = CreateService();
+
+        Assert.False(service.IsObstacleWithinDungeon(dungeon, obstacle));
+    }
+
+    [Fact]
+    public void ObstacleOnBoundary_ReturnsTrue()
+    {
+        var dungeon = new Dungeon { Width = 10, Height = 10 };
+        var obstacle = new Obstacle { X = 0, Y = 9 }; // valid boundary
+        DungeonService service = CreateService();
+
+        Assert.True(service.IsObstacleWithinDungeon(dungeon, obstacle));
     }
 }

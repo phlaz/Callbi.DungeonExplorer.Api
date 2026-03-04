@@ -20,13 +20,6 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     public async Task<IActionResult> Create([FromBody] Dungeon dungeon)
     {
         ArgumentNullException.ThrowIfNull(dungeon, nameof(dungeon));
-
-        // Validation
-        if(dungeon.Width < 5 || dungeon.Width > 50 || dungeon.Height < 5 || dungeon.Height > 50)
-        {
-            throw new ArgumentException("Invalid grid size");
-        }
-
         
         await service.AddNewDungeonAsync(dungeon);
 

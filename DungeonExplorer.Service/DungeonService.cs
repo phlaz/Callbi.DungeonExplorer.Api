@@ -1,11 +1,19 @@
-﻿namespace DungeonExplorer.Api.Service;
+﻿[assembly: InternalsVisibleTo("DungeonExplorer.Api.Tests")]
+
+namespace DungeonExplorer.Api.Service;
 
 public class DungeonService(IDungeonRepository repository, IPathfindingService pathfinding)
     : IDungeonService
 {
-    public async Task<bool> AddNewDungeonAsync(IDungeon map)
+    public async Task<bool> AddNewDungeonAsync(IDungeon dungeon)
     {
-        return await repository.AddNewDungeonAsync(map);
+        // Validation
+        if(dungeon.Width < 5 || dungeon.Width > 50 || dungeon.Height < 5 || dungeon.Height > 50)
+        {
+            throw new ArgumentException("Invalid grid size");
+        }
+
+        return await repository.AddNewDungeonAsync(dungeon);
     }
 
     public async Task<IDungeon?> GetDungeonAsync(int id) => await repository.GetDungeonAsync(id);
@@ -23,13 +31,15 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
         var dungeon = await GetDungeonAsync(dungeonId);
         if(dungeon == null) return null;
 
-        var incoming = obstacles.Select(w => new Obstacle
-        {
-            Id = w.Id,
-            X = w.X,
-            Y = w.Y,
-            DungeonId = dungeonId
-        }).ToList();
+        var incoming = obstacles
+            .Where(obstacle => IsObstacleWithinDungeon(dungeon, obstacle))
+            .Select(obstacle => new Obstacle
+            {
+                Id = obstacle.Id,
+                X = obstacle.X,
+                Y = obstacle.Y,
+                DungeonId = dungeonId
+            }).ToList();
 
         //Synchronize the obstacles collection.
         dungeon.Obstacles.SyncWith<Obstacle, int>(
@@ -43,4 +53,7 @@ public class DungeonService(IDungeonRepository repository, IPathfindingService p
         await repository.SaveChangesAsync();
         return dungeon;
     }
+
+    internal bool IsObstacleWithinDungeon(IDungeon dungeon, Obstacle o) => 
+        o.X >= 0 && o.X < dungeon.Width && o.Y >= 0 && o.Y < dungeon.Height;
 }
