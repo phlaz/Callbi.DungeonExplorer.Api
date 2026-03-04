@@ -1,20 +1,22 @@
-import axios from "axios";
+import axiosClient, { serverUrl } from "./axiosClient";
 
-const API_URL = "http://localhost:8080/api/dungeons";
+const API_URL = serverUrl + "/dungeons";
 
 export async function createDungeon(map: any) {
-  const response = await axios.post(API_URL, map);
+    const response = await axiosClient.post(`${API_URL}`, map);
   return response.data;
 }
 
 export async function getDungeon(id: string) {
-  const response = await axios.get(`${API_URL}/${id}`);
+    const response = await axiosClient.get(`${API_URL}/${id}`);
   return response.data;
 }
 
 //Streaming version of getPath
 export async function* streamPath(id: string) {
-    const response = await fetch(`${API_URL}/${id}/path`);
+    const token = localStorage.getItem("jwt");
+
+    const response = await fetch(`${API_URL}/${id}/path`, { headers: { Authorization: `Bearer ${token}`}});
 
     if (!response.body) {
         throw new Error("No response body");
@@ -46,7 +48,7 @@ export async function* streamPath(id: string) {
     }
 }
 
-export async function saveWallsToApi(id: number, obstacles: any[]) {
-    const response = await axios.patch(`${API_URL}/${id}/obstacles`, obstacles);
+export async function saveObstaclesToApi(id: number, obstacles: any[]) {
+    const response = await axiosClient.patch(`${API_URL}/${id}/obstacles`, obstacles);
     return response.data;
 }

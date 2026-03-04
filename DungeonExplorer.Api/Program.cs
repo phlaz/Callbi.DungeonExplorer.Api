@@ -1,8 +1,48 @@
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
-builder.Logging.SetMinimumLevel(LogLevel.Trace);
+var loggingBuilder = builder.Logging.SetMinimumLevel(LogLevel.Trace);
+
+var connectionString = builder.Configuration.GetConnectionString(Strings.DefaultConnection);
+builder.Services.AddDbContext<DungeonDBContext>(options =>
+    options.UseSqlite(connectionString));
+
+//swap out the implementation of IJwtKeyProvider for production
+var keyProvider = new DevJwtKeyProvider(builder.Configuration);
+
+// Ensure we have a valid JWT key
+var jwtKey = keyProvider.GetOrCreateKey();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<DungeonDBContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtKey))
+    };
+});
+
+
+builder.Services.AddAuthorization();
 
 builder.Services
     .AddControllers(options =>
@@ -14,7 +54,7 @@ builder.Services
      //Prevents automatic model state leaks
     .ConfigureApiBehaviorOptions(options => options.SuppressMapClientErrors = true);
 
-builder.Services.AddDbContext<DungeonContext>(opt => opt.UseSqlite(Strings.DataSource));
+builder.Services.AddDbContext<DungeonDBContext>(opt => opt.UseSqlite(Strings.DataSource));
 builder.Services.AddScoped<IDungeonRepository, DungeonRepository>();
 builder.Services.AddScoped<IPathfindingService, PathfindingService>();
 builder.Services.AddScoped<IDungeonService, DungeonService>();
@@ -30,7 +70,6 @@ builder.Services.AddSwaggerGen(config =>
         Description = "Secure API following OWASP Top 10 best practices"
     });
 
-    // Example JWT auth scheme if you add authentication later
     config.AddSecurityDefinition(Strings.Bearer, new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using Bearer scheme.",
@@ -74,6 +113,9 @@ if(!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(Strings.DefaultPolicy);
 
+app.UseAuthentication();   // must come before UseAuthorization
+app.UseAuthorization();
+
 // --- Global Error Handling ---
 app.UseExceptionHandler(errorApp =>
 {
@@ -99,10 +141,13 @@ if(app.Environment.IsDevelopment())
 
 using(var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<DungeonContext>();
+    var db = scope.ServiceProvider.GetRequiredService<DungeonDBContext>();
+    
+    //for dev - comment out for prod
     //db.Database.EnsureDeleted();
-    db.Database.EnsureCreated();
-    //db.Database.Migrate();
+    //db.Database.EnsureCreated();
+
+    db.Database.Migrate();
 }
 
 app.UseAuthorization();

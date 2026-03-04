@@ -1,6 +1,5 @@
 ﻿namespace DungeonExplorer.Api.Storage;
-
-public class DungeonRepository(DungeonContext context) : IDungeonRepository
+public class DungeonRepository(DungeonDBContext context) : IDungeonRepository
 {
     public async Task<bool> AddNewDungeonAsync(IDungeon dungeon)
     {

@@ -1,6 +1,6 @@
 ﻿namespace DungeonExplorer.Api.Storage;
 
-internal static class Strings
+internal partial class Strings
 {
-    public const string DataSource = "Data Source=dungeon.db";
+    public const string DefaultConnection = "DefaultConnection";
 }

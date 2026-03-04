@@ -12,4 +12,6 @@ internal static class Strings
     public const string DataSource = "Data Source=dungeon.db";
     public const string ApplicationJson = "application/json";
     public const string ApplicationNDJson = "application/x-ndjson";
+
+    public static string DefaultConnection = "DefaultConnection";
 }

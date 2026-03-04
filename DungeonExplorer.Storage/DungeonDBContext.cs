@@ -1,6 +1,6 @@
 ﻿namespace DungeonExplorer.Api.Storage;
 
-public class DungeonContext(DbContextOptions<DungeonContext> options) : DbContext(options)
+public class DungeonDBContext(DbContextOptions<DungeonDBContext> options) : IdentityDbContext(options)
 {
     public DbSet<Dungeon> Dungeons { get; set; }
 

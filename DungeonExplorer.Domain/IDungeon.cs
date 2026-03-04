@@ -13,6 +13,5 @@ public interface IDungeon
     Position Goal { get; }
 
     List<Obstacle> Obstacles { get; }
-
 }
 

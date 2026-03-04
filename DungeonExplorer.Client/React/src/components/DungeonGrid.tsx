@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function DungeonGrid({ dungeon, path, onWallsChanged, onSaveWalls }: {
+export default function DungeonGrid({ dungeon, path, onObstaclesChanged, onSaveObstacles }: {
     dungeon: any;
     path: any[];
-    onWallsChanged?: (walls: any[]) => void;
-    onSaveWalls?: (walls: any[]) => void;
+    onObstaclesChanged?: (obstacles: any[]) => void;
+    onSaveObstacles?: (obstacles: any[]) => void;
 }) {
     if (!dungeon) return null;
 
+    useEffect(() => {
+        setObstacles(dungeon?.obstacles ?? []);
+    }, [dungeon]);
+
     // Keep walls in local state so you can add/remove them interactively
-    const [walls, setWalls] = useState(dungeon.walls || []);
+    const [obstacles, setObstacles] = useState(dungeon.walls || []);
     
     const cells = [];
     for (let y = 0; y < dungeon.height; y++) {
         for (let x = 0; x < dungeon.width; x++) {
             const isStart = dungeon.start.x === x && dungeon.start.y === y;
             const isGoal = dungeon.goal.x === x && dungeon.goal.y === y;
-            const isWall = walls.some((w: any) => w.x === x && w.y === y);
+            const isWall = obstacles.some((w: any) => w.x === x && w.y === y);
             const isPath = Array.isArray(path) && path.some((p: any) => p.x === x && p.y === y);
 
             let style: React.CSSProperties = {
@@ -37,33 +41,33 @@ export default function DungeonGrid({ dungeon, path, onWallsChanged, onSaveWalls
                 <div
                     key={`${x}-${y}`}
                     style={style}
-                    onClick={() => toggleWall(x, y)}
+                    onClick={() => toggleObstacle(x, y)}
                 ></div>
             );
         }
         cells.push(<div key={`row-${y}`} style={{ clear: "both" }}></div>);
     }
 
-    const toggleWall = (x: number, y: number) => {
-        const exists = walls.some((w: any) => w.x === x && w.y === y);
-        let newWalls;
+    const toggleObstacle = (x: number, y: number) => {
+        const exists = obstacles.some((w: any) => w.x === x && w.y === y);
+        let newObstacles;
         if (exists) {
-            newWalls = walls.filter((w: any) => !(w.x === x && w.y === y));
+            newObstacles = obstacles.filter((w: any) => !(w.x === x && w.y === y));
         } else {
-            newWalls = [...walls, { x, y }];
+            newObstacles = [...obstacles, { x, y }];
         }
-        setWalls(newWalls);
-        if (onWallsChanged) onWallsChanged(newWalls); // notify parent if needed
+        setObstacles(newObstacles);
+        if (onObstaclesChanged) onObstaclesChanged(newObstacles); // notify parent if needed
     };
 
 
     const handleSave = () => {
-        if (onSaveWalls) {
-            onSaveWalls(walls);   // <-- call parent with updated walls
+        if (onSaveObstacles) {
+            onSaveObstacles(obstacles);   // <-- call parent with updated walls
         }
     };
 
-    return <div>{cells}<button onClick={handleSave} style={{ marginTop: "10px" }}>
+    return <div>{cells}<br/>Click the grid to add and remove obstacles. Dont forget to Save!<br/><button onClick={handleSave} style={{ marginTop: "10px" }}>
         Save Grid
     </button>
 </div>;

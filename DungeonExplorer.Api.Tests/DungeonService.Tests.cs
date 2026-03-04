@@ -4,11 +4,11 @@ public class MapServiceTests
 {
     static private DungeonService CreateService()
     {
-        var options = new DbContextOptionsBuilder<DungeonContext>()
+        var options = new DbContextOptionsBuilder<DungeonDBContext>()
             .UseInMemoryDatabase("TestDb")
             .Options;
 
-        var context = new DungeonContext(options);
+        var context = new DungeonDBContext(options);
         var repo = new DungeonRepository(context);
         var pathfinding = new PathfindingService();
         return new DungeonService(repo, pathfinding);

@@ -1,13 +1,9 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
-
-using System.Text.Json;
-
-namespace DungeonExplorer.Api.Controllers;
+﻿namespace DungeonExplorer.Api.Controllers;
 
 public record ApiError(string Error, object? Details);
 
 [ApiController]
-[Route("api/dungeons")]
+[Route("api/dungeons"), Authorize()]
 public class DungeonController(IDungeonService service, ILoggerFactory loggerFactory) : ControllerBase
 {
     private readonly ILogger logger = loggerFactory.CreateLogger<DungeonController>();
@@ -24,10 +20,19 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     public async Task<IActionResult> Create([FromBody] Dungeon dungeon)
     {
         ArgumentNullException.ThrowIfNull(dungeon, nameof(dungeon));
-        if(!await service.AddNewDungeonAsync(dungeon))
-            return BadRequest(new ApiError("Validation failed", null));
 
-        return CreatedAtAction(nameof(Get), new { id = dungeon.Id }, dungeon);
+        // Validation
+        if(dungeon.Width < 5 || dungeon.Width > 50 || dungeon.Height < 5 || dungeon.Height > 50)
+        {
+            throw new ArgumentException("Invalid grid size");
+        }
+
+        
+        await service.AddNewDungeonAsync(dungeon);
+
+        var result = CreatedAtAction(nameof(Get), new { id = dungeon.Id }, dungeon);
+        logger.LogInformation("New Dungeon created, Id: {id}", dungeon.Id);
+        return result;
     }
 
 
@@ -42,8 +47,19 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error", typeof(ApiError))]
     public async Task<IActionResult> Get(int id)
     {
+        if(id <= 0)
+        {
+            logger.LogWarning("Dungeon ID is not valid ({id})", id);
+            return BadRequest();
+        }
+
+        logger.LogInformation("Retrieving Dungeon {id}", id);
         var dungeon = await service.GetDungeonAsync(id);
-        if(dungeon == null) return NotFound(new ApiError("Dungeon not found", null));
+        if(dungeon == null)
+        {
+            logger.LogWarning("Dungeon ID {id} not found", id);
+            return NotFound(new ApiError("Dungeon not found", null));
+        }
         return Ok(dungeon);
     }
 
@@ -53,11 +69,25 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     [SwaggerResponse(StatusCodes.Status404NotFound, "Dungeon not found", typeof(ApiError))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid obstacle data", typeof(ApiError))]
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error", typeof(ApiError))]
-    public async Task<IActionResult> UpdateObstacles(int id, [FromBody] List<Obstacle> walls)
+    public async Task<IActionResult> UpdateObstacles(int id, [FromBody] List<Obstacle> obstacles)
     {
-        var updatedDungeon = await service.UpdateObstaclesAsync(id, walls);
+        if(obstacles is null)
+        {
+            logger.LogWarning("Obstacles is null. Nothing to update");
+            throw new ArgumentNullException(nameof(obstacles));
+        }
+
+        if(id <= 0)
+        {
+            logger.LogWarning("Dungeon ID is not valid ({id})", id);
+            return BadRequest();
+        }
+
+        logger.LogInformation("Updating obstacles for Dungeon {id}", id);
+        var updatedDungeon = await service.UpdateObstaclesAsync(id, obstacles);
         if(updatedDungeon == null)
         {
+            logger.LogWarning("Dungeon ID {id} not found", id);
             return NotFound(new ApiError("Dungeon not found", null));
         }
 
@@ -76,19 +106,29 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error")]
     public async Task StreamPath(int id)
     {
+        
         if(id <= 0)
         {
+            logger.LogWarning("Dungeon ID is not valid ({id})", id);
             Response.StatusCode = StatusCodes.Status400BadRequest;
             await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Invalid dungeon ID", null) + "\n"));
             return;
         }
 
+        logger.LogInformation("Calculating path through Dungeon {id}", id);
+
         try
         {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
             var result = await service.GetRouteThroughDungeonAsync(id);
 
             if(result == null)
             {
+                logger.LogWarning("Dungeon ID {id} not found", id);
                 Response.StatusCode = StatusCodes.Status404NotFound;
                 await Response.WriteAsync(JsonSerializer.Serialize(new ApiError("Dungeon not found", null) + "\n"));
                 return;
@@ -98,12 +138,10 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
             {
                 Response.StatusCode = StatusCodes.Status400BadRequest;
 
+                logger.LogWarning("Path computation failed: {x}", result.Error);
                 var apiError = new ApiError("Path computation failed", result.Error);
 
-                var json = JsonSerializer.Serialize(apiError, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+                var json = JsonSerializer.Serialize(apiError, options);
 
                 await Response.WriteAsync(json + "\n");
                 return;
@@ -111,10 +149,7 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
 
             await foreach(var p in result.Path.ToAsyncEnumerable())
             {
-                var json = JsonSerializer.Serialize(p, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+                var json = JsonSerializer.Serialize(p, options);
 
                 await Response.WriteAsync(json + "\n");
                 await Response.Body.FlushAsync();

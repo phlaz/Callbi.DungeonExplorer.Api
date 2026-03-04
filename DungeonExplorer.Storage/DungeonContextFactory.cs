@@ -1,14 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿namespace DungeonExplorer.Api.Storage;
 
-namespace DungeonExplorer.Api.Storage;
-
-public class DungeonContextFactory : IDesignTimeDbContextFactory<DungeonContext>
+public class DungeonContextFactory : IDesignTimeDbContextFactory<DungeonDBContext>
 {
-    public DungeonContext CreateDbContext(string[] args)
+    public DungeonDBContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<DungeonContext>();
-        optionsBuilder.UseSqlite(Strings.DataSource);
+        // Build configuration from appsettings.json + environment variables
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
 
-        return new DungeonContext(optionsBuilder.Options);
+        var connectionString = config.GetConnectionString(Strings.DefaultConnection);
+
+        var optionsBuilder = new DbContextOptionsBuilder<DungeonDBContext>();
+        optionsBuilder.UseSqlite(connectionString);
+
+        return new DungeonDBContext(optionsBuilder.Options);
     }
+
 }

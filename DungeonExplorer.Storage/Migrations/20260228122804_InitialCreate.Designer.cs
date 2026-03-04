@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DungeonExplorer.Api.Storage.Migrations
 {
-    [DbContext(typeof(DungeonContext))]
+    [DbContext(typeof(DungeonDBContext))]
     [Migration("20260228122804_InitialCreate")]
     partial class InitialCreate
     {
