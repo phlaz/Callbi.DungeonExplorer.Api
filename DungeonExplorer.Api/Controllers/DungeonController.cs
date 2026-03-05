@@ -4,7 +4,7 @@ public record ApiError(string Error, object? Details);
 
 [ApiController]
 [Route("api/dungeons"), Authorize()]
-public class DungeonController(IDungeonService service, ILoggerFactory loggerFactory) : ControllerBase
+public class DungeonController(IDungeonService service, ILoggerFactory loggerFactory, IWebHostEnvironment environment) : ControllerBase
 {
     private readonly ILogger logger = loggerFactory.CreateLogger<DungeonController>();
 
@@ -19,10 +19,10 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error", typeof(ApiError))]
     public async Task<IActionResult> Create([FromBody] Dungeon dungeon)
     {
-        ArgumentNullException.ThrowIfNull(dungeon, nameof(dungeon));
-
         try
         {
+            ArgumentNullException.ThrowIfNull(dungeon, nameof(dungeon));
+        
             await service.AddNewDungeonAsync(dungeon);
 
             var result = CreatedAtAction(nameof(Create), new { id = dungeon.Id }, dungeon);
@@ -33,37 +33,18 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
         {
             return BadRequest(new { error = x.Message });
         }
+        catch(Exception x)
+        {
+            logger.LogError(x, x.Message);
+            var response = environment.IsDevelopment()
+                ? new { error = "Unexpected server error", details = x.Message }
+                : new { error = "Unexpected server error", details = "Please try again later." };
+
+            return StatusCode(500, response);
+        }
     }
 
-
-    /// <summary>
-    /// Retrieve a dungeon by ID
-    /// </summary>
-    /// <param name="id">int</param>
-    /// <returns>Http 200 if found, else 404</returns>
-    [HttpGet("{id}")]
-    [SwaggerResponse(StatusCodes.Status200OK, "Dungeon retrieved successfully", typeof(Dungeon))]
-    [SwaggerResponse(StatusCodes.Status404NotFound, "Dungeon not found", typeof(ApiError))]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error", typeof(ApiError))]
-    public async Task<IActionResult> Get(int id)
-    {
-        if(id <= 0)
-        {
-            logger.LogWarning("Dungeon ID is not valid ({id})", id);
-            return BadRequest();
-        }
-
-        logger.LogInformation("Retrieving Dungeon {id}", id);
-        var dungeon = await service.GetDungeonAsync(id);
-        if(dungeon == null)
-        {
-            logger.LogWarning("Dungeon ID {id} not found", id);
-            return NotFound(new ApiError("Dungeon not found", null));
-        }
-        return Ok(dungeon);
-    }
-
-
+   
     [HttpPatch("{id}/obstacles")]
     [SwaggerResponse(StatusCodes.Status200OK, "Obstacles updated successfully", typeof(Dungeon))]
     [SwaggerResponse(StatusCodes.Status404NotFound, "Dungeon not found", typeof(ApiError))]
@@ -71,27 +52,40 @@ public class DungeonController(IDungeonService service, ILoggerFactory loggerFac
     [SwaggerResponse(StatusCodes.Status500InternalServerError, "Unexpected server error", typeof(ApiError))]
     public async Task<IActionResult> UpdateObstacles(int id, [FromBody] List<Obstacle> obstacles)
     {
-        if(obstacles is null)
+        try
         {
-            logger.LogWarning("Obstacles is null. Nothing to update");
-            throw new ArgumentNullException(nameof(obstacles));
-        }
+            if(obstacles is null)
+            {
+                logger.LogWarning("Obstacles is null. Nothing to update");
+                //no data to update shouldn't cause an error
+                return Ok();
+            }
+        
+            if(id <= 0)
+            {
+                logger.LogWarning("Dungeon ID is not valid ({id})", id);
+                return BadRequest(new ApiError("Dungeon not found", null));
+            }
 
-        if(id <= 0)
+            logger.LogInformation("Updating obstacles for Dungeon {id}", id);
+            var updatedDungeon = await service.UpdateObstaclesAsync(id, obstacles);
+            if(updatedDungeon == null)
+            {
+                logger.LogWarning("Dungeon ID {id} not found", id);
+                return NotFound(new ApiError("Dungeon not found", null));
+            }
+
+            return Ok(updatedDungeon);
+        }
+        catch(Exception x)
         {
-            logger.LogWarning("Dungeon ID is not valid ({id})", id);
-            return BadRequest();
-        }
+            logger.LogError(x, x.Message);
+            var response = environment.IsDevelopment()
+                ? new { error = "Unexpected server error", details = x.Message }
+                : new { error = "Unexpected server error", details = "Please try again later." };
 
-        logger.LogInformation("Updating obstacles for Dungeon {id}", id);
-        var updatedDungeon = await service.UpdateObstaclesAsync(id, obstacles);
-        if(updatedDungeon == null)
-        {
-            logger.LogWarning("Dungeon ID {id} not found", id);
-            return NotFound(new ApiError("Dungeon not found", null));
+            return StatusCode(500, response);
         }
-
-        return Ok(updatedDungeon);
     }
 
 
