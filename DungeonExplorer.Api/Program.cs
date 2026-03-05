@@ -41,6 +41,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddDbContext<DungeonDBContext>(opt => opt.UseSqlite(Strings.DataSource));
+
+builder.Services.AddScoped<IDungeonRepository, DungeonRepository>();
+builder.Services.AddScoped<IPathfindingService, PathfindingService>();
+builder.Services.AddScoped<IDungeonService, DungeonService>();
+builder.Services.AddTransient<IDungeonAuthService, DungeonAuthService>();
 
 builder.Services.AddAuthorization();
 
@@ -54,10 +60,6 @@ builder.Services
      //Prevents automatic model state leaks
     .ConfigureApiBehaviorOptions(options => options.SuppressMapClientErrors = true);
 
-builder.Services.AddDbContext<DungeonDBContext>(opt => opt.UseSqlite(Strings.DataSource));
-builder.Services.AddScoped<IDungeonRepository, DungeonRepository>();
-builder.Services.AddScoped<IPathfindingService, PathfindingService>();
-builder.Services.AddScoped<IDungeonService, DungeonService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
@@ -145,7 +147,7 @@ using(var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DungeonDBContext>();
     
-    //for dev - comment out for prod
+    //for dev to easily recreate the DB - comment out for prod
     //db.Database.EnsureDeleted();
     //db.Database.EnsureCreated();
 

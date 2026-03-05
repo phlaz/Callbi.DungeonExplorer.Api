@@ -11,7 +11,7 @@ public class DungeonDBContext(DbContextOptions<DungeonDBContext> options) : Iden
         modelBuilder.Owned<Position>();
         modelBuilder.Entity<Dungeon>().OwnsOne(d => d.Start);
         modelBuilder.Entity<Dungeon>().OwnsOne(d => d.Goal);
-        modelBuilder.Entity<Dungeon>().HasMany(d => d.Obstacles).WithOne().HasForeignKey(o => o.DungeonId).OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Dungeon>().HasMany(d => d.Obstacles).WithOne(o => o.Dungeon).HasForeignKey(o => o.DungeonId).OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
     }

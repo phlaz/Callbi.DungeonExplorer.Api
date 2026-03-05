@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DungeonExplorer.Api.Storage.Migrations
 {
     [DbContext(typeof(DungeonDBContext))]
-    [Migration("20260304130817_InitialCreate")]
+    [Migration("20260305132312_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -46,9 +46,6 @@ namespace DungeonExplorer.Api.Storage.Migrations
                     b.Property<int>("DungeonId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DungeonId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("X")
                         .HasColumnType("INTEGER");
 
@@ -58,8 +55,6 @@ namespace DungeonExplorer.Api.Storage.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DungeonId");
-
-                    b.HasIndex("DungeonId1");
 
                     b.ToTable("Obstacles");
                 });
@@ -309,15 +304,11 @@ namespace DungeonExplorer.Api.Storage.Migrations
 
             modelBuilder.Entity("DungeonExplorer.Api.Domain.Obstacle", b =>
                 {
-                    b.HasOne("DungeonExplorer.Api.Domain.Dungeon", null)
+                    b.HasOne("DungeonExplorer.Api.Domain.Dungeon", "Dungeon")
                         .WithMany("Obstacles")
                         .HasForeignKey("DungeonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DungeonExplorer.Api.Domain.Dungeon", "Dungeon")
-                        .WithMany()
-                        .HasForeignKey("DungeonId1");
 
                     b.Navigation("Dungeon");
                 });

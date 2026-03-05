@@ -2,7 +2,7 @@
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController(UserManager<IdentityUser> userManager, IConfiguration config, ILoggerFactory loggerFactory) : ControllerBase
+public class AuthController(IDungeonAuthService authService, UserManager<IdentityUser> userManager, IConfiguration config, ILoggerFactory loggerFactory) : ControllerBase
 {
     private readonly ILogger logger = loggerFactory.CreateLogger<AuthController>();
 
@@ -58,6 +58,12 @@ public class AuthController(UserManager<IdentityUser> userManager, IConfiguratio
         ArgumentNullException.ThrowIfNullOrWhiteSpace(email, nameof(email));
         var password = credentials.Password;
         ArgumentNullException.ThrowIfNullOrWhiteSpace(password, nameof(password));
+
+        if(!authService.IsValidEmail(email))
+        {
+            logger.LogWarning("Email is not valid");
+            return BadRequest();
+        }
 
         var user = new IdentityUser
         {

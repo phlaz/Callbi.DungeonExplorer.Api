@@ -182,8 +182,7 @@ namespace DungeonExplorer.Api.Storage.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     X = table.Column<int>(type: "INTEGER", nullable: false),
                     Y = table.Column<int>(type: "INTEGER", nullable: false),
-                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    DungeonId1 = table.Column<int>(type: "INTEGER", nullable: true)
+                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,11 +193,6 @@ namespace DungeonExplorer.Api.Storage.Migrations
                         principalTable: "Dungeons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Obstacles_Dungeons_DungeonId1",
-                        column: x => x.DungeonId1,
-                        principalTable: "Dungeons",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -242,11 +236,6 @@ namespace DungeonExplorer.Api.Storage.Migrations
                 name: "IX_Obstacles_DungeonId",
                 table: "Obstacles",
                 column: "DungeonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Obstacles_DungeonId1",
-                table: "Obstacles",
-                column: "DungeonId1");
         }
 
         /// <inheritdoc />
